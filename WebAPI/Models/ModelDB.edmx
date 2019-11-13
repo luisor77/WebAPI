@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BIBLIOTECAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Estudiante">
+          <Key>
+            <PropertyRef Name="IdLector" />
+          </Key>
+          <Property Name="IdLector" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CI" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="600" Nullable="false" />
+          <Property Name="Carrera" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Edad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Libro">
+          <Key>
+            <PropertyRef Name="IdLibro" />
+          </Key>
+          <Property Name="IdLibro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Titulo" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Editorial" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Area" Type="varchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Prestamo">
+          <Key>
+            <PropertyRef Name="IdPrestamo" />
+          </Key>
+          <Property Name="IdLector" Type="int" Nullable="false" />
+          <Property Name="IdLibro" Type="int" Nullable="false" />
+          <Property Name="FechaPrestamo" Type="date" Nullable="false" />
+          <Property Name="FechaDevolucion" Type="date" Nullable="false" />
+          <Property Name="Devuelto" Type="char" MaxLength="1" />
+          <Property Name="IdPrestamo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BIBLIOTECA.dbo.View_Prestamo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_Prestamo">
+          <Key>
+            <PropertyRef Name="IdPrestamo" />
+            <PropertyRef Name="IdLector" />
+            <PropertyRef Name="Nombre" />
+            <PropertyRef Name="CI" />
+            <PropertyRef Name="Direccion" />
+            <PropertyRef Name="Carrera" />
+            <PropertyRef Name="Edad" />
+            <PropertyRef Name="IdLibro" />
+            <PropertyRef Name="Titulo" />
+            <PropertyRef Name="Editorial" />
+            <PropertyRef Name="Area" />
+            <PropertyRef Name="FechaPrestamo" />
+            <PropertyRef Name="FechaDevolucion" />
+          </Key>
+          <Property Name="IdPrestamo" Type="int" Nullable="false" />
+          <Property Name="IdLector" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CI" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="600" Nullable="false" />
+          <Property Name="Carrera" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Edad" Type="int" Nullable="false" />
+          <Property Name="IdLibro" Type="int" Nullable="false" />
+          <Property Name="Titulo" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Editorial" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Area" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="FechaPrestamo" Type="date" Nullable="false" />
+          <Property Name="FechaDevolucion" Type="date" Nullable="false" />
+          <Property Name="Devuelto" Type="char" MaxLength="1" />
+        </EntityType>
+        <Association Name="FK_Prestamo_Estudiante">
+          <End Role="Estudiante" Type="Self.Estudiante" Multiplicity="1" />
+          <End Role="Prestamo" Type="Self.Prestamo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estudiante">
+              <PropertyRef Name="IdLector" />
+            </Principal>
+            <Dependent Role="Prestamo">
+              <PropertyRef Name="IdLector" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prestamo_Libro">
+          <End Role="Libro" Type="Self.Libro" Multiplicity="1" />
+          <End Role="Prestamo" Type="Self.Prestamo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Libro">
+              <PropertyRef Name="IdLibro" />
+            </Principal>
+            <Dependent Role="Prestamo">
+              <PropertyRef Name="IdLibro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BIBLIOTECAModelStoreContainer">
+          <EntitySet Name="Estudiante" EntityType="Self.Estudiante" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Libro" EntityType="Self.Libro" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Prestamo" EntityType="Self.Prestamo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="View_Prestamo" EntityType="Self.View_Prestamo" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_Prestamo].[IdPrestamo] AS [IdPrestamo], 
+    [View_Prestamo].[IdLector] AS [IdLector], 
+    [View_Prestamo].[Nombre] AS [Nombre], 
+    [View_Prestamo].[CI] AS [CI], 
+    [View_Prestamo].[Direccion] AS [Direccion], 
+    [View_Prestamo].[Carrera] AS [Carrera], 
+    [View_Prestamo].[Edad] AS [Edad], 
+    [View_Prestamo].[IdLibro] AS [IdLibro], 
+    [View_Prestamo].[Titulo] AS [Titulo], 
+    [View_Prestamo].[Editorial] AS [Editorial], 
+    [View_Prestamo].[Area] AS [Area], 
+    [View_Prestamo].[FechaPrestamo] AS [FechaPrestamo], 
+    [View_Prestamo].[FechaDevolucion] AS [FechaDevolucion], 
+    [View_Prestamo].[Devuelto] AS [Devuelto]
+    FROM [dbo].[View_Prestamo] AS [View_Prestamo]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Prestamo_Estudiante" Association="Self.FK_Prestamo_Estudiante">
+            <End Role="Estudiante" EntitySet="Estudiante" />
+            <End Role="Prestamo" EntitySet="Prestamo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prestamo_Libro" Association="Self.FK_Prestamo_Libro">
+            <End Role="Libro" EntitySet="Libro" />
+            <End Role="Prestamo" EntitySet="Prestamo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BIBLIOTECAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Estudiante">
+          <Key>
+            <PropertyRef Name="IdLector" />
+          </Key>
+          <Property Name="IdLector" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CI" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="600" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Carrera" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Edad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Prestamo" Relationship="Self.FK_Prestamo_Estudiante" FromRole="Estudiante" ToRole="Prestamo" />
+        </EntityType>
+        <EntityType Name="Libro">
+          <Key>
+            <PropertyRef Name="IdLibro" />
+          </Key>
+          <Property Name="IdLibro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Titulo" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Editorial" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Area" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Prestamo" Relationship="Self.FK_Prestamo_Libro" FromRole="Libro" ToRole="Prestamo" />
+        </EntityType>
+        <EntityType Name="Prestamo">
+          <Key>
+            <PropertyRef Name="IdPrestamo" />
+          </Key>
+          <Property Name="IdLector" Type="Int32" Nullable="false" />
+          <Property Name="IdLibro" Type="Int32" Nullable="false" />
+          <Property Name="FechaPrestamo" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FechaDevolucion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Devuelto" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IdPrestamo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Estudiante" Relationship="Self.FK_Prestamo_Estudiante" FromRole="Prestamo" ToRole="Estudiante" />
+          <NavigationProperty Name="Libro" Relationship="Self.FK_Prestamo_Libro" FromRole="Prestamo" ToRole="Libro" />
+        </EntityType>
+        <Association Name="FK_Prestamo_Estudiante">
+          <End Role="Estudiante" Type="Self.Estudiante" Multiplicity="1" />
+          <End Role="Prestamo" Type="Self.Prestamo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estudiante">
+              <PropertyRef Name="IdLector" />
+            </Principal>
+            <Dependent Role="Prestamo">
+              <PropertyRef Name="IdLector" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prestamo_Libro">
+          <End Role="Libro" Type="Self.Libro" Multiplicity="1" />
+          <End Role="Prestamo" Type="Self.Prestamo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Libro">
+              <PropertyRef Name="IdLibro" />
+            </Principal>
+            <Dependent Role="Prestamo">
+              <PropertyRef Name="IdLibro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BIBLIOTECAEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Estudiante" EntityType="Self.Estudiante" />
+          <EntitySet Name="Libro" EntityType="Self.Libro" />
+          <EntitySet Name="Prestamo" EntityType="Self.Prestamo" />
+          <AssociationSet Name="FK_Prestamo_Estudiante" Association="Self.FK_Prestamo_Estudiante">
+            <End Role="Estudiante" EntitySet="Estudiante" />
+            <End Role="Prestamo" EntitySet="Prestamo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prestamo_Libro" Association="Self.FK_Prestamo_Libro">
+            <End Role="Libro" EntitySet="Libro" />
+            <End Role="Prestamo" EntitySet="Prestamo" />
+          </AssociationSet>
+          <EntitySet Name="View_Prestamo" EntityType="BIBLIOTECAModel.View_Prestamo" />
+        </EntityContainer>
+        <EntityType Name="View_Prestamo">
+          <Key>
+            <PropertyRef Name="IdPrestamo" />
+            <PropertyRef Name="IdLector" />
+            <PropertyRef Name="Nombre" />
+            <PropertyRef Name="CI" />
+            <PropertyRef Name="Direccion" />
+            <PropertyRef Name="Carrera" />
+            <PropertyRef Name="Edad" />
+            <PropertyRef Name="IdLibro" />
+            <PropertyRef Name="Titulo" />
+            <PropertyRef Name="Editorial" />
+            <PropertyRef Name="Area" />
+            <PropertyRef Name="FechaPrestamo" />
+            <PropertyRef Name="FechaDevolucion" />
+          </Key>
+          <Property Name="IdPrestamo" Type="Int32" Nullable="false" />
+          <Property Name="IdLector" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CI" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="Direccion" Type="String" Nullable="false" MaxLength="600" FixedLength="false" Unicode="false" />
+          <Property Name="Carrera" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Edad" Type="Int32" Nullable="false" />
+          <Property Name="IdLibro" Type="Int32" Nullable="false" />
+          <Property Name="Titulo" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Editorial" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Area" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="FechaPrestamo" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FechaDevolucion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Devuelto" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BIBLIOTECAModelStoreContainer" CdmEntityContainer="BIBLIOTECAEntities">
+          <EntitySetMapping Name="Estudiante">
+            <EntityTypeMapping TypeName="BIBLIOTECAModel.Estudiante">
+              <MappingFragment StoreEntitySet="Estudiante">
+                <ScalarProperty Name="IdLector" ColumnName="IdLector" />
+                <ScalarProperty Name="CI" ColumnName="CI" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Carrera" ColumnName="Carrera" />
+                <ScalarProperty Name="Edad" ColumnName="Edad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Libro">
+            <EntityTypeMapping TypeName="BIBLIOTECAModel.Libro">
+              <MappingFragment StoreEntitySet="Libro">
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Editorial" ColumnName="Editorial" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prestamo">
+            <EntityTypeMapping TypeName="BIBLIOTECAModel.Prestamo">
+              <MappingFragment StoreEntitySet="Prestamo">
+                <ScalarProperty Name="IdLector" ColumnName="IdLector" />
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="FechaPrestamo" ColumnName="FechaPrestamo" />
+                <ScalarProperty Name="FechaDevolucion" ColumnName="FechaDevolucion" />
+                <ScalarProperty Name="Devuelto" ColumnName="Devuelto" />
+                <ScalarProperty Name="IdPrestamo" ColumnName="IdPrestamo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_Prestamo">
+            <EntityTypeMapping TypeName="BIBLIOTECAModel.View_Prestamo">
+              <MappingFragment StoreEntitySet="View_Prestamo">
+                <ScalarProperty Name="Devuelto" ColumnName="Devuelto" />
+                <ScalarProperty Name="FechaDevolucion" ColumnName="FechaDevolucion" />
+                <ScalarProperty Name="FechaPrestamo" ColumnName="FechaPrestamo" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="Editorial" ColumnName="Editorial" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Edad" ColumnName="Edad" />
+                <ScalarProperty Name="Carrera" ColumnName="Carrera" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="CI" ColumnName="CI" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdLector" ColumnName="IdLector" />
+                <ScalarProperty Name="IdPrestamo" ColumnName="IdPrestamo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
